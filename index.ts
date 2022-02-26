@@ -18,7 +18,7 @@ app.use(morgan("dev"))
 
 app.use("/", versionrouter)
 
-app.get("/", (req:Request, res:Response, next:NextFunction) => {1
+app.get("/", (req:Request, res:Response) => {1
   return res.status(200).json({
     message: "ReSearch Engine API",
     status: 200,
