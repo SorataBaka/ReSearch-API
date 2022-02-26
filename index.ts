@@ -4,7 +4,6 @@ import { Request, Response, NextFunction } from "express"
 import bodyParser from "body-parser"
 import morgan from "morgan"
 import compression from "compression"
-import consola from "consola"
 
 import versionrouter from "./routes/versionrouter"
 import connectMongoose from "./utils/mongoconnect"
@@ -30,7 +29,7 @@ app.get("/", (req:Request, res:Response, next:NextFunction) => {1
 const PORT = process.env.PORT || 3000
 const URI = process.env.MONGO_URI || undefined
 app.listen(PORT, async() => {
-  consola.info(`Server is running on port ${PORT}`)
+  console.log(`Server is running on port ${PORT}`)
   await connectMongoose(URI as string)
-  consola.info("Startup Complete")
+  console.log("Startup Complete")
 })

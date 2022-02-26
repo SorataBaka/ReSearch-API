@@ -10,7 +10,7 @@
     "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied `any` type.. */
     "strictNullChecks": true,                         /* When type checking, take into account `null` and `undefined`. */
     "alwaysStrict": true,                             /* Ensure 'use strict' is always emitted. */
-    "noUnusedLocals": true,                           /* Enable error reporting when a local variables aren't read. */
+    "noUnusedLocals": false,                           /* Enable error reporting when a local variables aren't read. */
     "noUnusedParameters": false,                       /* Raise an error when a function parameter isn't read */
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   }
