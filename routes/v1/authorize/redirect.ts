@@ -12,7 +12,7 @@ const redirect = async(req:Request, res:Response) => {
     message:"Authorization token is valid",
     status: 200,
     data: {
-      token: tokens
+      ...tokens
     }
   })
 
