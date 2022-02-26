@@ -4,9 +4,10 @@ import { Request, Response } from "express";
 import { oauth2Client } from "../../../utils/googleclient";
 
 const createBookmark = async (req: Request, res: Response) => {
-  const { bookmarkid } = req.params;
+  const { groupid } = req.query;
   const { access_token } = req.headers;
-  if(!access_token || !bookmarkid) return res.send(404).json({
+  const { name, url } = req.body;
+  if(!access_token || !groupid || !name || !url) return res.send(404).json({
     message: "invalid parameters",
     status: 404,
     data: {}
@@ -38,5 +39,58 @@ const createBookmark = async (req: Request, res: Response) => {
       data: {}
     })
   }
+  const bookmarks = userQuery[0].bookmarks
+  console.log(bookmarks)
+  const isValid = await bookmarks.filter((bookmark:any) => {
+    console.log(bookmark.bookmarkid, groupid)
+    return bookmark.bookmarkid === groupid
+  })
+  if(isValid.length == 0){
+    return res.status(404).json({
+      message: "Bookmark not found",
+      status: 404,
+      data: {}
+    })
+  }
+  const bookmarkQuery = await bookmark.find({
+    bookmarkid: groupid
+  }).catch(err => {
+    console.log(err)
+    return undefined
+  })
+  if(!bookmarkQuery || bookmarkQuery.length == 0){
+    return res.status(404).json({
+      message: "Bookmark not found",
+      status: 404,
+      data: {}
+    })
+  }
+  await bookmark.findOneAndUpdate({
+    bookmarkid: groupid
+  }, {
+    bookmarkid: groupid,
+    $push: {
+      links: {
+        name: name,
+        url: url
+      }
+    }
+  }, {
+    upsert: true
+  }).catch(err => {
+    return res.status(500).json({
+      message: "Internal server error",
+      status: 500,
+      data: err
+    })
+  })
+  const bookmarkquery = await bookmark.find({bookmarkid: groupid})
+  return res.status(200).json({
+    message: "Bookmark created successfully",
+    status: 200,
+    data: {
+      ...bookmarkquery[0]
+    }
+  })
 }
 export default createBookmark
