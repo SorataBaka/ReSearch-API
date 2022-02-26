@@ -4,7 +4,7 @@
   "description": "API for ReSearch site",
   "main": "build/index.js",
   "scripts": {
-    "start": "tsc && node build/index.js",
+    "start": "node build/index.js",
     "build": "tsc",
     "dev": "tsc -w && nodemon build/index.js"
   },
