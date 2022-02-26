@@ -4,5 +4,10 @@ import { Request, Response } from "express";
 import { oauth2Client } from "../../../utils/googleclient";
 
 const deleteBookmark = async (req: Request, res: Response) => {
+  return res.status(200).json({
+    message: "Bookmark deleted successfully",
+    status: 200,
+    data: {}
+  })
 }
 export default deleteBookmark
