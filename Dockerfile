@@ -1,4 +1,6 @@
-FROM node:16.14.0
+FROM node:16.13.0
+
+ENV NODE_OPTIONS=--max_old_space_size=512
 
 WORKDIR /app
 
