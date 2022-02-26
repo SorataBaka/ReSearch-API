@@ -1,6 +1,6 @@
 FROM node:16.13.0
 
-ENV NODE_OPTIONS=--max_old_space_size=4096
+ENV NODE_OPTIONS=--max_old_space_size=12288
 
 WORKDIR /app
 
