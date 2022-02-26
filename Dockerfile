@@ -12,4 +12,6 @@ RUN npm install -g typescript
 
 COPY . .
 
-CMD [ "npm", "start" ]
+RUN npm run build
+
+CMD ["node", "build/index.js"]
