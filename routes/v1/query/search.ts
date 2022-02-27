@@ -23,8 +23,9 @@ const search = async(req: Request, res: Response) => {
   }).catch(() => {
     return undefined
   })
+  console.log(searchdata)
   if(searchdata === undefined) return res.status(400).json({
-    message: "invalid access_token",
+    message: "query failed",
     status: 400,
     data: {}
   })
@@ -50,6 +51,10 @@ const search = async(req: Request, res: Response) => {
     message:"Success retrieve search result",
     status: 200,
     data: {
+      totalQuery: parseInt(searchdata.data.searchInformation?.totalResults as string),
+      query: searchquery,
+      index: startingIndex,
+      searchtime: searchdata.data.searchInformation?.searchTime,
       items: responsearray
     }
   })
