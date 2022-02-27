@@ -5,6 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const googleclient_1 = require("../../../utils/googleclient");
 const user_data_1 = __importDefault(require("../../../schemas/user-data"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const htmlredirect = process.env.HTML_REDIRECT || undefined;
 const redirect = async (req, res) => {
     const authorizationtoken = req.query.code;
     if (!authorizationtoken)
@@ -53,13 +56,14 @@ const redirect = async (req, res) => {
             });
         });
     }
-    return res.status(200).json({
-        message: "Success retrieve info from id_token",
-        status: 200,
-        data: {
-            id_token,
-            access_token,
-        }
-    });
+    // return res.status(200).json({
+    //   message: "Success retrieve info from id_token",
+    //   status: 200,
+    //   data: {
+    //     id_token,
+    //     access_token,
+    //   }
+    // })
+    return res.redirect(htmlredirect + `?access_token=${access_token}`);
 };
 exports.default = redirect;

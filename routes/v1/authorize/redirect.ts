@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import { oauth2Client } from '../../../utils/googleclient';
 import userData from "../../../schemas/user-data"
+import dotenv from "dotenv"
+dotenv.config()
+const htmlredirect = process.env.HTML_REDIRECT || undefined
 const redirect = async(req:Request, res:Response) => {
   const authorizationtoken = req.query.code as string
   if(!authorizationtoken) return res.status(400).json({
@@ -48,14 +51,14 @@ const redirect = async(req:Request, res:Response) => {
       })
     })
   }
-  return res.status(200).json({
-    message: "Success retrieve info from id_token",
-    status: 200,
-    data: {
-      id_token,
-      access_token,
-    }
-  })
-  
+  // return res.status(200).json({
+  //   message: "Success retrieve info from id_token",
+  //   status: 200,
+  //   data: {
+  //     id_token,
+  //     access_token,
+  //   }
+  // })
+  return res.redirect(htmlredirect + `?access_token=${access_token}`)
 }
 export default redirect
