@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node build/index.js",
     "build": "tsc",
-    "dev": "tsc -w && nodemon build/index.js"
+    "dev": "tsc -w && nodemon build/index.js",
+    "doc": "jsdoc -d docs build/index.js"
   },
   "keywords": [
     "API",
