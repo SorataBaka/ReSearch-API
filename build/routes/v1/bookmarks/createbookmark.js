@@ -4,25 +4,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_data_1 = __importDefault(require("../../../schemas/user-data"));
-const bookmark_1 = __importDefault(require("../../../schemas/bookmark"));
 const googleclient_1 = require("../../../utils/googleclient");
 const nanoid_1 = require("nanoid");
 const createBookmark = async (req, res) => {
-    const { groupid } = req.query;
     const { access_token } = req.headers;
-    const { name, url } = req.body;
-    if (!access_token || !groupid || !name || !url)
-        return res.send(404).json({
+    const { bookmarkname, bookmarkdescription, bookmarkurl } = req.body;
+    if (!access_token || !bookmarkdescription || !bookmarkname || !bookmarkurl)
+        return res.status(400).json({
             message: "invalid parameters",
-            status: 404,
-            data: {}
+            status: 400,
+            data: {},
         });
-    const item = await googleclient_1.oauth2Client.getTokenInfo(access_token).catch(err => { return undefined; });
+    const item = await googleclient_1.oauth2Client
+        .getTokenInfo(access_token)
+        .catch((err) => {
+        return undefined;
+    });
     if (item === undefined)
         return res.status(400).json({
             message: "Invalid access_token",
             status: 400,
-            data: {}
+            data: {},
         });
     const currentDate = new Date();
     const tokenExpiry = new Date(item.expiry_date * 1000);
@@ -30,73 +32,47 @@ const createBookmark = async (req, res) => {
         return res.status(400).json({
             message: "Invalid access_token",
             status: 400,
-            data: {}
+            data: {},
         });
     const userid = item.sub;
-    const userQuery = await user_data_1.default.find({
-        userid
-    }).catch(err => {
-        console.log(err);
-        return undefined;
-    });
-    if (!userQuery || userQuery.length == 0) {
-        return res.status(404).json({
-            message: "User not found",
-            status: 404,
-            data: {}
-        });
-    }
-    const bookmarks = userQuery[0].bookmarks;
-    const isValid = await bookmarks.filter((bookmark) => {
-        return bookmark.bookmarkid === groupid;
-    });
-    if (isValid.length == 0) {
-        return res.status(404).json({
-            message: "Bookmark not found",
-            status: 404,
-            data: {}
-        });
-    }
-    const bookmarkQuery = await bookmark_1.default.find({
-        bookmarkid: groupid
-    }).catch(err => {
-        console.log(err);
-        return undefined;
-    });
-    if (!bookmarkQuery || bookmarkQuery.length == 0) {
-        return res.status(404).json({
-            message: "Bookmark not found",
-            status: 404,
-            data: {}
-        });
-    }
-    await bookmark_1.default.findOneAndUpdate({
-        bookmarkid: groupid
+    await user_data_1.default
+        .findOneAndUpdate({
+        userid: userid,
     }, {
-        bookmarkid: groupid,
+        userid: userid,
         $push: {
-            links: {
-                name: name,
-                url: url,
-                contentid: (0, nanoid_1.nanoid)(10)
-            }
-        }
+            bookmarks: {
+                bookmarkid: (0, nanoid_1.nanoid)(15),
+                bookmarkname: bookmarkname,
+                bookmarkdescription: bookmarkdescription,
+                bookmarkurl: bookmarkurl,
+            },
+        },
     }, {
-        upsert: true
-    }).catch(err => {
+        upsert: true,
+    })
+        .catch((err) => {
         return res.status(500).json({
             message: "Internal server error",
             status: 500,
-            data: err
+            data: err,
         });
     });
-    const bookmarkquery = await bookmark_1.default.find({ bookmarkid: groupid });
+    const userQuery = await user_data_1.default.find({ userid: userid }).catch((err) => {
+        return undefined;
+    });
+    if (userQuery === undefined)
+        return res.status(500).json({
+            message: "Internal server error",
+            status: 500,
+            data: {},
+        });
     return res.status(200).json({
-        message: "Bookmark created successfully",
+        message: "success",
         status: 200,
         data: {
-            bookmark: bookmarkquery[0]
-        }
+            userData: userQuery[0],
+        },
     });
 };
 exports.default = createBookmark;

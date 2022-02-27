@@ -47,7 +47,9 @@ const listUserBookmark = async (req, res) => {
         message: "success",
         status: 200,
         data: {
-            bookmarks
+            bookmarks,
+            userName: userQuery[0].name,
+            userId: userQuery[0].userid
         }
     });
 };

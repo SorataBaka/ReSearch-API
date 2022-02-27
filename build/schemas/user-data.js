@@ -7,25 +7,37 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const userSchema = new mongoose_1.default.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     userid: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     bookmarks: [
         {
             bookmarkid: {
                 type: String,
-                required: true
-            }
-        }
-    ]
+                required: true,
+            },
+            bookmarkname: {
+                type: String,
+                required: true,
+            },
+            bookmarkdescription: {
+                type: String,
+                required: true,
+            },
+            bookmarkurl: {
+                type: String,
+                required: true,
+            },
+        },
+    ],
 });
 exports.default = mongoose_1.default.model("user-data", userSchema);
