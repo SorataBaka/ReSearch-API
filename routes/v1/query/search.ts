@@ -4,6 +4,7 @@ const cx = process.env.CX || undefined
 if(!cx) throw new Error("CX is required")
 const search = async(req: Request, res: Response) => {
   const searchquery = req.query.q as string
+  const startingIndex = req.query.index || 0
   if(!searchquery) return res.status(400).json({
     message:"invalid parameters",
     status: 400,
@@ -12,6 +13,9 @@ const search = async(req: Request, res: Response) => {
   const searchdata = await customsearch.cse.list({
     q: searchquery,
     cx: cx,
+    start: startingIndex as number,
+    num: 20,
+    exactTerms: "beginners",
   }).catch()
   if(!searchdata.data) return res.status(500).json({
     message:"internal server error",

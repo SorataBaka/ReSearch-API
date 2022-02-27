@@ -6,6 +6,7 @@ if (!cx)
     throw new Error("CX is required");
 const search = async (req, res) => {
     const searchquery = req.query.q;
+    const startingIndex = req.query.index || 0;
     if (!searchquery)
         return res.status(400).json({
             message: "invalid parameters",
@@ -15,6 +16,9 @@ const search = async (req, res) => {
     const searchdata = await googleclient_1.customsearch.cse.list({
         q: searchquery,
         cx: cx,
+        start: startingIndex,
+        num: 20,
+        exactTerms: "beginners",
     }).catch();
     if (!searchdata.data)
         return res.status(500).json({
