@@ -7,7 +7,7 @@ const login = (req, res) => {
         scope: [
             "email",
             "profile",
-            "openid"
+            "openid",
         ]
     });
     return res.status(200).json({

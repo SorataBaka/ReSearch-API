@@ -14,10 +14,21 @@ const search = async(req: Request, res: Response) => {
     q: searchquery,
     cx: cx,
     start: startingIndex as number,
-    num: 20,
-    exactTerms: "beginners",
-  }).catch()
-  if(!searchdata.data) return res.status(500).json({
+    excludeTerms: "porn, bokep, hentai, xxx, xxxx, ecchi",
+    filter: "1",
+    orTerms: "beginners, guide, tutorial, learn, study",
+    safe: "active",
+    siteSearch: "https://wikipedia.org",
+    siteSearchFilter: "e",
+  }).catch(() => {
+    return undefined
+  })
+  if(searchdata === undefined) return res.status(400).json({
+    message: "invalid access_token",
+    status: 400,
+    data: {}
+  })
+  if(!searchdata?.data) return res.status(500).json({
     message:"internal server error",
     status: 500,
     data: {}
