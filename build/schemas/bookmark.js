@@ -22,6 +22,10 @@ const bookmarkSchema = new mongoose_1.default.Schema({
             url: {
                 type: String,
                 required: true
+            },
+            contentid: {
+                type: String,
+                required: true
             }
         }
     ]

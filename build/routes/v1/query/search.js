@@ -26,7 +26,6 @@ const search = async (req, res) => {
     }).catch(() => {
         return undefined;
     });
-    console.log(searchdata);
     if (searchdata === undefined)
         return res.status(400).json({
             message: "query failed",

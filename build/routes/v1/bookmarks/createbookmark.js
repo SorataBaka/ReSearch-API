@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const user_data_1 = __importDefault(require("../../../schemas/user-data"));
 const bookmark_1 = __importDefault(require("../../../schemas/bookmark"));
 const googleclient_1 = require("../../../utils/googleclient");
+const nanoid_1 = require("nanoid");
 const createBookmark = async (req, res) => {
     const { groupid } = req.query;
     const { access_token } = req.headers;
@@ -46,9 +47,7 @@ const createBookmark = async (req, res) => {
         });
     }
     const bookmarks = userQuery[0].bookmarks;
-    console.log(bookmarks);
     const isValid = await bookmarks.filter((bookmark) => {
-        console.log(bookmark.bookmarkid, groupid);
         return bookmark.bookmarkid === groupid;
     });
     if (isValid.length == 0) {
@@ -78,7 +77,8 @@ const createBookmark = async (req, res) => {
         $push: {
             links: {
                 name: name,
-                url: url
+                url: url,
+                contentid: (0, nanoid_1.nanoid)(10)
             }
         }
     }, {
@@ -95,7 +95,7 @@ const createBookmark = async (req, res) => {
         message: "Bookmark created successfully",
         status: 200,
         data: {
-            ...bookmarkquery[0]
+            bookmark: bookmarkquery[0]
         }
     });
 };

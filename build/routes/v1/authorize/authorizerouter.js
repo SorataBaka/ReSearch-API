@@ -24,5 +24,5 @@ authorizeRouter.get("/redirect", redirect_1.default);
  * @returns {object} - The user info
  *
  */
-authorizeRouter.get("/validate", retrieveuser_1.default);
+authorizeRouter.get("/retrieveuser", retrieveuser_1.default);
 exports.default = authorizeRouter;

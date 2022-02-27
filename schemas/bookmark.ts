@@ -17,6 +17,10 @@ const bookmarkSchema = new mongoose.Schema({
       url: {
         type: String,
         required: true
+      },
+      contentid: {
+        type: String,
+        required: true
       }
     }
   ]

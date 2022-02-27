@@ -2,7 +2,7 @@ import userData from "../../../schemas/user-data";
 import bookmark from "../../../schemas/bookmark";
 import { Request, Response } from "express";
 import { oauth2Client } from "../../../utils/googleclient";
-
+import { nanoid } from "nanoid"
 const createBookmark = async (req: Request, res: Response) => {
   const { groupid } = req.query;
   const { access_token } = req.headers;
@@ -40,9 +40,7 @@ const createBookmark = async (req: Request, res: Response) => {
     })
   }
   const bookmarks = userQuery[0].bookmarks
-  console.log(bookmarks)
   const isValid = await bookmarks.filter((bookmark:any) => {
-    console.log(bookmark.bookmarkid, groupid)
     return bookmark.bookmarkid === groupid
   })
   if(isValid.length == 0){
@@ -72,7 +70,8 @@ const createBookmark = async (req: Request, res: Response) => {
     $push: {
       links: {
         name: name,
-        url: url
+        url: url,
+        contentid: nanoid(10)
       }
     }
   }, {
@@ -89,7 +88,7 @@ const createBookmark = async (req: Request, res: Response) => {
     message: "Bookmark created successfully",
     status: 200,
     data: {
-      ...bookmarkquery[0]
+      bookmark: bookmarkquery[0]
     }
   })
 }

@@ -19,5 +19,5 @@ authorizeRouter.get("/redirect", redirectAuth)
  * @returns {object} - The user info
  * 
  */
-authorizeRouter.get("/validate", validatetoken)
+authorizeRouter.get("/retrieveuser", validatetoken)
 export default authorizeRouter
